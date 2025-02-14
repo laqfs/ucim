@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UCIM</title>
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Área Principal -->
+    <div class="main-section">
+      <h3>UCIM</h3>
+
+      <!-- Upload do Excel -->
+      <div class="field-group">
+        <div class="field">
+          <label for="upload-excel" class="highlight">Carregar Ficheiro Excel</label>
+          <input type="file" id="upload-excel" accept=".xlsx, .xls">
+        </div>
+      </div>
+
+      <!-- Número de Episódio -->
+      <div class="field-group">
+        <div class="field">
+          <label for="numero-episodio" class="highlight">Número de Episódio</label>
+          <input type="text" id="numero-episodio" placeholder="Introduza o número do episódio">
+        </div>
+        <div class="field">
+          <label>Importar Dados</label>
+          <button id="buscar-dados">Buscar Dados</button>
+        </div>
+      </div>
+
+      <!-- Dados do Paciente -->
+      <div class="field-group">
+        <div class="field">
+          <label for="processo-paciente">Processo</label>
+          <input type="text" id="processo-paciente" placeholder="Número de Processo">
+        </div>
+
+        <div class="field">
+          <label for="sexo-paciente">Sexo</label>
+          <select id="sexo-paciente">
+            <option value="" disabled selected>Selecione o sexo</option>
+            <option value="Masculino">Masculino</option>
+            <option value="Feminino">Feminino</option>
+            <option value="outro">Outro</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="nascimento-paciente">Data de Nascimento</label>
+          <input type="date" id="nascimento-paciente">
+        </div>
+        <div class="field">
+          <label>Idade</label>
+          <span id="idade-paciente" style="display: block; padding: 8px; border: 1px solid #ccc; border-radius: 5px;">-</span>
+        </div>
+      </div>
+
+      <!-- Admissão e Alta -->
+      <div class="field-group">
+        <div class="field">
+          <label for="proveniencia">Proveniência</label>
+          <input type="text" id="proveniencia" placeholder="Proveniência">
+        </div>
+        <div class="field">
+          <label for="servanterior">Proveniência</label>
+          <input type="text" id="servanterior" placeholder="Serviço Anterior">
+        </div>
+        <div class="field">
+          <label for="data-admissao">Admissão na Unidade</label>
+          <input type="date" id="data-admissao">
+        </div>
+      </div>
+
+      <div class="field-group">
+        <div class="field">
+          <label for="destino">Destino</label>
+          <input type="text" id="destino" placeholder="Destino">
+        </div>
+        <div class="field">
+          <label for="servposterior">Transferência para</label>
+          <input type="text" id="servposterior" placeholder="Serviço Posterior">
+        </div>
+        <div class="field">
+          <label for="data-alta">Alta da Unidade</label>
+          <input type="date" id="data-alta">
+        </div>
+      </div>
+
+      <div class="field-group">
+       <div class="field">
+        <label for="estado-clinico">Estado clínico na transferência da unidade</label>
+        <select id="estado-clinico">
+          <option value="" disabled selected>Selecione o estado clínico</option>
+          <option value="Curado">Curado</option>
+          <option value="Melhorado">Melhorado</option>
+          <option value="Mesmo Estado">Mesmo Estado</option>
+          <option value="Piorado">Piorado</option>
+          <option value="Falecido Sem Autopsia">Falecido Sem Autópsia</option>
+        </select>
+       </div>
+       <div class="field">
+        <label>Dias de Internamento na Unidade</label>
+        <span id="dias-internamento" style="display: block; padding: 8px; border: 1px solid #ccc; border-radius: 5px;">-</span>
+       </div>
+      </div>
+
+      <div class="field-group">
+        <div class="field">
+          <label for="data-adm-hosp">Admissão hospital</label>
+          <input type="date" id="data-adm-hosp">
+        </div>
+        <div class="field">
+          <label for="data-alta-hosp">Alta hospital</label>
+          <input type="date" id="data-alta-hosp">
+        </div>
+        <div class="field">
+          <label for="destinofinal">Destino final</label>
+          <input type="text" id="destinofinal" placeholder="Destino final">
+        </div>
+       </div>
+
+     <!-- História médica prévia -->
+    <h3>História médica prévia:</h3>
+      <div class="container">
+      <textarea id="hxClinica" placeholder="História médica prévia..."></textarea>
+
+    <!-- Diagnósticos Prévios -->
+    <div id="diagnostics">
+      <h3>Diagnósticos Prévios:</h3>
+      <ul id="diagnosticsList"></ul>
+      <button id="addDiagnosis">Adicionar Diagnóstico</button>
+    </div>
+  </div>
+
+     <!-- História atual e evolução -->
+    <h3>História da doença atual e evolução:</h3>
+      <div class="container">
+      <textarea id="hxAtual" placeholder="História da doença atual e evolução no internamento..."></textarea>
+
+    <!-- Diagnósticos Atuais -->
+    <div id="diagnostics">
+      <h3>Diagnósticos Atuais:</h3>
+      <ul id="diagnosticsAtual"></ul>
+      <button id="addDiagnosis">Adicionar Diagnóstico</button>
+    </div>
+  </div>
+
+
+      <!-- Intervenções no Internamento -->
+      <div class="field">
+        <label>Intervenções no Internamento</label>
+        <div class="checkboxes">
+          <label><input type="checkbox" id="vasopressor"> Vasopressor/Inotrópico</label>
+          <label><input type="checkbox" id="respiratorio"> Respiratório</label>
+          <div id="respiratorio-opcoes">
+            <label><input type="checkbox" value="oxigenoterapia"> OxigenoterapiaConvencional</label>
+            <label><input type="checkbox" value="onaf"> ONAF</label>
+            <label><input type="checkbox" value="cpap"> CPAP</label>
+            <label><input type="checkbox" value="vni"> VNI</label>
+          </div>
+          <label><input type="checkbox" id="renal"> Renal</label>
+          <label><input type="checkbox" id="transfusional"> Transfusional</label>
+          <label><input type="checkbox" id="imunomodulacao"> Imunomodulação</label>
+          <label><input type="checkbox" id="antibioterapia"> Antibioterapia</label>
+        </div>
+      </div>
+
+
+      <label id="interesse">Caso de particular interesse<input type="checkbox"></label>
+
+      <!-- Dados do Médico -->
+      <div class="field-group">
+        <div class="field">
+          <label for="nome-medico">Nome do Médico</label>
+          <input type="text" id="nome-medico" placeholder="Nome do Médico">
+        </div>
+        <div class="field">
+          <label for="data-nota">Data da Nota</label>
+          <input type="date" id="data-nota">
+        </div>
+      </div>
+   
+    
+     <!-- Ações finais -->
+    <div class="field-group">
+        <div class="field">
+          <label>Gravar</label>
+          <button id="gravar">Gravar</button>
+        </div>
+        <div class="field">
+          <label>Imprimir</label>
+          <button id="imprimir">Imprimir</button>
+        </div>
+        <div class="field">
+          <label>Exportar</label>
+          <button id="exportar">Exportar</button>
+        </div>
+    </div>
+  </div>
+  </div>
+  
+  <script src="script.js" type="module"></script>
+</body>
+</html>
